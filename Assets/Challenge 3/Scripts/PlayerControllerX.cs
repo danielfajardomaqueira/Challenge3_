@@ -18,10 +18,8 @@ public class PlayerControllerX : MonoBehaviour
     public AudioClip explodeSound;
 
     private int moneyCoins = 0;
-    private float yRange = 15f;
-    private float verticalInput;
-    private float speed = 1f;
 
+    private float yRange = 15f;
 
 
     // Start is called before the first frame update
@@ -47,16 +45,13 @@ public class PlayerControllerX : MonoBehaviour
             playerRb.AddForce(Vector3.up * floatForce);
         }
 
-        if (moneyCoins >= 3)
+        
+        if (transform.position.y > yRange)
         {
-            Debug.Log("Game Over");
-            Time.timeScale = 0;
+            playerRb.velocity = new Vector3(0, 0, 0);
         }
 
-        //verticalInput = verticalInput.GetAxis("Vertical");
-        transform.Translate(Vector3.up * speed * Time.deltaTime * verticalInput);
-
-        PlayerInBounds();
+        
     }
 
     private void OnCollisionEnter(Collision other)
@@ -67,7 +62,7 @@ public class PlayerControllerX : MonoBehaviour
             explosionParticle.Play();
             playerAudio.PlayOneShot(explodeSound, 1.0f);
             gameOver = true;
-            Debug.Log("Game Over!");
+            Debug.Log($"Game Over! You Collect {moneyCoins} Dollars.");
             Destroy(other.gameObject);
         } 
 
@@ -82,20 +77,10 @@ public class PlayerControllerX : MonoBehaviour
         }
 
         
-        }
+        
 
-    private void PlayerInBounds()
-    {
-        Vector3 pos = transform.position;
-        if (pos.y < -yRange)
-        {
-            transform.position = new Vector3(-yRange, pos.x, pos.z);
-        }
-
-        if (pos.y > yRange)
-        {
-            transform.position = new Vector3(yRange, pos.x, pos.z);
-        }
+    
+        
 
 
 
